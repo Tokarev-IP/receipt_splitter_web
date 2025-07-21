@@ -1,6 +1,7 @@
 🧾 Receipt Splitter — Web App
-Receipt Splitter is a simple web tool that helps you quickly turn a photo of a receipt into a digital version, split the total with friends, and share it easily.
-The same app is available as an Android version for splitting on the go!
+Receipt Splitter is a simple web tool that turns a photo of a receipt into a digital version, lets you split the total with friends, and share it easily. The same app is also available on Android so you can split on the go!
+
+🔗 Try it now: receipt-splitter-it-app.web.app
 
 ✨ What it does
 📸 Upload a receipt photo
