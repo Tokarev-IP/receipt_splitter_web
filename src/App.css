@@ -1,0 +1,102 @@
+body, html, #root {
+  width: 100%;
+  overflow-x: hidden;
+  margin: 2;
+  padding: 0;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #61dafb 0%, #1976d2 100%);
+  padding: 9px 18px;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0 !important;
+}
+
+.app-header-logo {
+  height: 24px;
+  width: 24px;
+  margin-right: 14px;
+  border-radius: 6px;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 148, 115, 0.10);
+  transition: transform 0.2s;
+}
+
+.app-header-logo:hover {
+  transform: scale(1.08) rotate(-6deg);
+}
+
+.app-header-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(25, 118, 210, 0.12);
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: linear-gradient(270deg, #61dafb, #a259f7, #f857a6, #ff5858, #ffb347, #43e97b, #38f9d7, #61dafb);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  cursor: pointer;
+  animation: animatedGradient 4s ease-in-out infinite;
+}
+
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.app-header-title:hover {
+  filter: drop-shadow(0 0 8px #61dafb);
+}

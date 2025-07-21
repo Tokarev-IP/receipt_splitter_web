@@ -1,0 +1,158 @@
+body {
+  margin: 2;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* --- Responsive Utility Classes --- */
+
+.responsive-container {
+  padding: 8px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .responsive-container {
+    padding: 8px;
+    max-width: 100%;
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+
+@media (max-width: 600px) {
+  .flex-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .grid-responsive {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.responsive-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #1976d2;
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 600px) {
+  .responsive-button {
+    padding: 10px 12px;
+    font-size: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.responsive-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.responsive-modal-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  min-width: 320px;
+  max-width: 90vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+@media (max-width: 600px) {
+  .responsive-modal-content {
+    padding: 12px;
+    min-width: 0;
+    width: 95vw;
+    max-width: 95vw;
+  }
+}
+
+/* --- Responsive Typography --- */
+
+h1, h2, h3, h4, h5, h6 {
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.2rem; }
+  h3 { font-size: 1.1rem; }
+}
+
+/* --- Responsive Form Elements --- */
+input, select, textarea, button {
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  input, select, textarea, button {
+    font-size: 0.95rem;
+  }
+}
+
+/* --- App Header Responsive --- */
+.app-header-bar {
+  width: 100%;
+  background: #1976d2;
+  color: #fff;
+  padding: 16px 0;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 600px) {
+  .app-header-bar {
+    font-size: 1.1rem;
+    padding: 10px 0;
+  }
+}

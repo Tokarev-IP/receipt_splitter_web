@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Rules for folder1: read and write only for authorized users
+    match /amount_of_using/{docId} {
+      allow read, write: if request.auth != null; // user must be authenticated
+    }
+
+    // Rules for folder2: read only for authorized users
+    match /main_constants/{docId} {
+      allow read: if request.auth != null;        // authenticated users can read
+      allow write: if false;                      // nobody can write
+    }
+
+    // Catch-all fallback (optional, usually used for denying access)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
