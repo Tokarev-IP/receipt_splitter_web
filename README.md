@@ -1,37 +1,59 @@
-🧾 Receipt Splitter — Web App
-Receipt Splitter is a simple web tool that turns a photo of a receipt into a digital version, lets you split the total with friends, and share it easily. The same app is also available on Android so you can split on the go!
+# 🧾 Receipt Splitter — Web App
 
-🔗 Try it now: receipt-splitter-it-app.web.app
+**Receipt Splitter** is a simple web tool that turns a photo of a receipt into a digital version, lets you split the total with friends, and share it easily. The same app is also available on **Android** so you can split on the go!
 
-✨ What it does
-📸 Upload a receipt photo
-Upload your restaurant, grocery, or any other receipt.
+**🌐 Try it now:** [https://receipt-splitter-it-app.web.app/](https://receipt-splitter-it-app.web.app/)
 
-🤖 AI-powered receipt scan
-Uses Gemini AI to read and digitize the receipt details.
+---
 
-👥 Split the bill
-Divide the total amount among friends quickly.
+## ✨ Features
 
-🔗 Share the split
-Share the split breakdown via a link.
+- 📸 **Upload a receipt photo**  
+  Upload your restaurant, grocery, or any other receipt.
 
-✅ No data stored
-Your receipt data is processed on the fly — we don’t store any receipt details permanently.
+- 🤖 **AI-powered scan**  
+  Uses **Gemini AI** to read and digitize your receipt instantly.
 
-🔒 Authentication
-To keep things secure, the app uses Firebase Authentication:
+- 👥 **Split the bill**  
+  Divide the total among friends in seconds.
 
-Sign in with Google
+- 🔗 **Share the split**  
+  Send your friends a simple link to see what they owe.
 
-Or sign up/sign in with Email & Password
+- 🔒 **No data stored**  
+  Your receipt is processed instantly — nothing is saved permanently.
 
-🛡️ Security
-Firebase App Check ensures that only authentic requests come from your actual web app.
+---
 
-No sensitive data is stored permanently — your privacy is respected.
+## 🔐 Authentication
 
-📱 Android App
-Prefer mobile? The same Receipt Splitter is available as an Android app!
+The app uses **Firebase Authentication** for secure sign-in:
+- Sign in with **Google**
+- Or sign up and log in with **Email & Password**
+
+---
+
+## 🛡️ Security
+
+- **Firebase App Check** ensures only real requests from your app are accepted.
+- No receipt data is stored — your privacy stays yours.
+
+---
+
+## 📱 Android Version
+
+Prefer mobile? Download **Receipt Splitter** for Android:
+
+[![Get it on Google Play](https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg)]([https://play.google.com/store/apps/details?id=your.package.name](https://play.google.com/store/apps/details?id=com.iliatokarev.receipt_splitter_app))
+
+---
+
+## 🚀 Getting Started (Developers)
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/receipt-splitter-web.git
+
 
 
