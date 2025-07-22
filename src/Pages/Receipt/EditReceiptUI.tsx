@@ -238,120 +238,192 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
       </div>
       {/* Edit Modal */}
       {showModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: '#fff', borderRadius: 12, padding: 32, minWidth: 320, boxShadow: '0 2px 16px rgba(0,0,0,0.15)' }}>
-            <h2>Edit Receipt Info</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 16 }}>
-              <label>
-                Name:
-                <input name="receiptName" maxLength={70} value={form.receiptName} onChange={handleChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
-              </label>
-              <label>
-                Translated Name:
-                <input name="translatedReceiptName" maxLength={70} value={form.translatedReceiptName ?? ''} onChange={handleTranslatedNameChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
-              </label>
-              <label>
-                Date:
-                <input name="date" maxLength={70} value={form.date} onChange={handleChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
-              </label>
-              <label>
-                Total:
-                <input
-                  name="total"
-                  type="number"
-                  min={0}
-                  max={99999999}
-                  value={form.total === 0 ? '0' : String(form.total).replace(/^0+(\d)/, '$1')}
-                  onChange={handleChange}
-                  style={{ width: '100%', marginTop: 4, height: 36 }}
-                />
-              </label>
-              {/* Modern increment/decrement controls for tax, discount, tip */}
-              <div style={{ display: 'flex', gap: 16, marginTop: 8, alignItems: 'center', justifyContent: 'space-between' }}>
-                {(['tax', 'discount', 'tip'] as const).map((field) => (
-                  <div key={field} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-                    <span style={{ fontWeight: 500, marginBottom: 4, textTransform: 'capitalize' }}>{field.charAt(0).toUpperCase() + field.slice(1)} (%)</span>
-                    <div style={{ display: 'flex', alignItems: 'center', background: '#f5f5f5', borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.06)', padding: '4px 8px' }}>
-                      <button
-                        type="button"
-                        onClick={() => handleDecrement(field)}
-                        style={{
-                          border: 'none',
-                          background: '#e0e7ef',
-                          color: '#1976d2',
-                          borderRadius: '50%',
-                          width: 32,
-                          height: 32,
-                          fontSize: 20,
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          marginRight: 8,
-                          transition: 'background 0.2s',
-                        }}
-                      >-</button>
-                      <span style={{ minWidth: 32, textAlign: 'center', fontSize: 18, fontWeight: 600 }}>{form[field] ?? 0}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleIncrement(field)}
-                        style={{
-                          border: 'none',
-                          background: '#e0e7ef',
-                          color: '#1976d2',
-                          borderRadius: '50%',
-                          width: 32,
-                          height: 32,
-                          fontSize: 20,
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          marginLeft: 8,
-                          transition: 'background 0.2s',
-                        }}
-                      >+</button>
+        <>
+          <style>{`
+            .edit-modal-overlay {
+              position: fixed;
+              top: 0; left: 0; width: 100vw; height: 100vh;
+              background: rgba(0,0,0,0.25);
+              display: flex; align-items: center; justify-content: center;
+              z-index: 1000;
+            }
+            .edit-modal {
+              background: #fff;
+              border-radius: 12px;
+              padding: 32px;
+              min-width: 320px;
+              max-width: 95vw;
+              width: 420px;
+              box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+              max-height: 90vh;
+              overflow-y: auto;
+              display: flex;
+              flex-direction: column;
+            }
+            @media (max-width: 600px) {
+              .edit-modal {
+                width: 98vw;
+                min-width: unset;
+                padding: 16px 6px;
+                font-size: 15px;
+                border-radius: 8px;
+              }
+              .edit-modal h2 {
+                font-size: 1.2em;
+              }
+            }
+          `}</style>
+          <div className="edit-modal-overlay">
+            <div className="edit-modal">
+              <h2>Edit Receipt Info</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 16 }}>
+                <label>
+                  Name:
+                  <input name="receiptName" maxLength={70} value={form.receiptName} onChange={handleChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
+                </label>
+                <label>
+                  Translated Name:
+                  <input name="translatedReceiptName" maxLength={70} value={form.translatedReceiptName ?? ''} onChange={handleTranslatedNameChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
+                </label>
+                <label>
+                  Date:
+                  <input name="date" maxLength={70} value={form.date} onChange={handleChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
+                </label>
+                <label>
+                  Total:
+                  <input
+                    name="total"
+                    type="number"
+                    min={0}
+                    max={99999999}
+                    value={form.total === 0 ? '0' : String(form.total).replace(/^0+(\d)/, '$1')}
+                    onChange={handleChange}
+                    style={{ width: '100%', marginTop: 4, height: 36 }}
+                  />
+                </label>
+                {/* Modern increment/decrement controls for tax, discount, tip */}
+                <div style={{ display: 'flex', gap: 16, marginTop: 8, alignItems: 'center', justifyContent: 'space-between' }}>
+                  {(['tax', 'discount', 'tip'] as const).map((field) => (
+                    <div key={field} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+                      <span style={{ fontWeight: 500, marginBottom: 4, textTransform: 'capitalize' }}>{field.charAt(0).toUpperCase() + field.slice(1)} (%)</span>
+                      <div style={{ display: 'flex', alignItems: 'center', background: '#f5f5f5', borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.06)', padding: '4px 8px' }}>
+                        <button
+                          type="button"
+                          onClick={() => handleDecrement(field)}
+                          style={{
+                            border: 'none',
+                            background: '#e0e7ef',
+                            color: '#1976d2',
+                            borderRadius: '50%',
+                            width: 32,
+                            height: 32,
+                            fontSize: 20,
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            marginRight: 8,
+                            transition: 'background 0.2s',
+                          }}
+                        >-</button>
+                        <span style={{ minWidth: 32, textAlign: 'center', fontSize: 18, fontWeight: 600 }}>{form[field] ?? 0}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleIncrement(field)}
+                          style={{
+                            border: 'none',
+                            background: '#e0e7ef',
+                            color: '#1976d2',
+                            borderRadius: '50%',
+                            width: 32,
+                            height: 32,
+                            fontSize: 20,
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            marginLeft: 8,
+                            transition: 'background 0.2s',
+                          }}
+                        >+</button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+              {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
+              <div style={{ display: 'flex', gap: 16, marginTop: 32, justifyContent: 'flex-end' }}>
+                <button onClick={handleCancel} style={{ padding: '8px 20px', borderRadius: 6, border: '1px solid #bbb', background: '#f5f5f5', cursor: 'pointer' }}>Cancel</button>
+                <button onClick={handleSave} style={{ padding: '8px 20px', borderRadius: 6, border: 'none', background: '#1976d2', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Save</button>
               </div>
             </div>
-            {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
-            <div style={{ display: 'flex', gap: 16, marginTop: 32, justifyContent: 'flex-end' }}>
-              <button onClick={handleCancel} style={{ padding: '8px 20px', borderRadius: 6, border: '1px solid #bbb', background: '#f5f5f5', cursor: 'pointer' }}>Cancel</button>
-              <button onClick={handleSave} style={{ padding: '8px 20px', borderRadius: 6, border: 'none', background: '#1976d2', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Save</button>
-            </div>
           </div>
-        </div>
+        </>
       )}
       {/* Order Edit Modal */}
       {editingOrderIdx !== null && orderEditForm && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100 }}>
-          <div style={{ background: '#fff', borderRadius: 12, padding: 32, minWidth: 320, boxShadow: '0 2px 16px rgba(0,0,0,0.15)' }}>
-            <h2>Edit Order</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 16 }}>
-              <label>
-                Name:
-                <input name="name" maxLength={70} value={orderEditForm.name} onChange={handleOrderEditChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
-              </label>
-              <label>
-                Translated Name:
-                <input name="translatedName" maxLength={70} value={orderEditForm.translatedName ?? ''} onChange={handleOrderEditChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
-              </label>
-              <label>
-                Amount:
-                <input name="quantity" type="number" min={0} max={99} step={1} value={String(orderEditForm.quantity)} onChange={handleOrderEditChange} 
-                  onKeyDown={(e) => { if (e.key === '.' || e.key === ',') e.preventDefault(); }}
-                  style={{ width: '100%', marginTop: 4, height: 36 }} />
-              </label>
-              <label>
-                Price:
-                <input name="price" type="number" min={-9999999} max={9999999} step="0.01" value={String(orderEditForm.price)} onChange={handleOrderEditChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
-              </label>
-              {orderEditError && <div style={{ color: 'red', marginTop: 8 }}>{orderEditError}</div>}
-            </div>
-            <div style={{ display: 'flex', gap: 16, marginTop: 32, justifyContent: 'flex-end' }}>
-              <button onClick={handleOrderEditCancel} style={{ padding: '8px 20px', borderRadius: 6, border: '1px solid #bbb', background: '#f5f5f5', cursor: 'pointer' }}>Cancel</button>
-              <button onClick={handleOrderEditSave} style={{ padding: '8px 20px', borderRadius: 6, border: 'none', background: '#1976d2', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Save</button>
+        <>
+          <style>{`
+            .order-edit-modal-overlay {
+              position: fixed;
+              top: 0; left: 0; width: 100vw; height: 100vh;
+              background: rgba(0,0,0,0.25);
+              display: flex; align-items: center; justify-content: center;
+              z-index: 1100;
+            }
+            .order-edit-modal {
+              background: #fff;
+              border-radius: 12px;
+              padding: 32px;
+              min-width: 320px;
+              max-width: 95vw;
+              width: 420px;
+              box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+              max-height: 90vh;
+              overflow-y: auto;
+              display: flex;
+              flex-direction: column;
+            }
+            @media (max-width: 600px) {
+              .order-edit-modal {
+                width: 98vw;
+                min-width: unset;
+                padding: 16px 6px;
+                font-size: 15px;
+                border-radius: 8px;
+              }
+              .order-edit-modal h2 {
+                font-size: 1.2em;
+              }
+            }
+          `}</style>
+          <div className="order-edit-modal-overlay">
+            <div className="order-edit-modal">
+              <h2>Edit Order</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 16 }}>
+                <label>
+                  Name:
+                  <input name="name" maxLength={70} value={orderEditForm.name} onChange={handleOrderEditChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
+                </label>
+                <label>
+                  Translated Name:
+                  <input name="translatedName" maxLength={70} value={orderEditForm.translatedName ?? ''} onChange={handleOrderEditChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
+                </label>
+                <label>
+                  Amount:
+                  <input name="quantity" type="number" min={0} max={99} step={1} value={String(orderEditForm.quantity)} onChange={handleOrderEditChange} 
+                    onKeyDown={(e) => { if (e.key === '.' || e.key === ',') e.preventDefault(); }}
+                    style={{ width: '100%', marginTop: 4, height: 36 }} />
+                </label>
+                <label>
+                  Price:
+                  <input name="price" type="number" min={-9999999} max={9999999} step="0.01" value={String(orderEditForm.price)} onChange={handleOrderEditChange} style={{ width: '100%', marginTop: 4, height: 36 }} />
+                </label>
+                {orderEditError && <div style={{ color: 'red', marginTop: 8 }}>{orderEditError}</div>}
+              </div>
+              <div style={{ display: 'flex', gap: 16, marginTop: 32, justifyContent: 'flex-end' }}>
+                <button onClick={handleOrderEditCancel} style={{ padding: '8px 20px', borderRadius: 6, border: '1px solid #bbb', background: '#f5f5f5', cursor: 'pointer' }}>Cancel</button>
+                <button onClick={handleOrderEditSave} style={{ padding: '8px 20px', borderRadius: 6, border: 'none', background: '#1976d2', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Save</button>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
