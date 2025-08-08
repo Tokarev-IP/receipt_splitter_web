@@ -263,10 +263,10 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
             }
             @media (max-width: 600px) {
               .edit-modal-overlay {
-                padding: 8px;
+                padding: 16px;
               }
               .edit-modal {
-                width: 100%;
+                width: calc(100% - 32px);
                 min-width: unset;
                 padding: 20px 16px;
                 font-size: 15px;
@@ -282,7 +282,11 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
               }
             }
             @media (max-width: 480px) {
+              .edit-modal-overlay {
+                padding: 12px;
+              }
               .edit-modal {
+                width: calc(100% - 24px);
                 padding: 16px 12px;
               }
             }
@@ -470,15 +474,27 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
               flex-direction: column;
             }
             @media (max-width: 600px) {
+              .order-edit-modal-overlay {
+                padding: 16px;
+              }
               .order-edit-modal {
-                width: 98vw;
+                width: calc(100% - 32px);
                 min-width: unset;
-                padding: 16px 6px;
+                padding: 20px 16px;
                 font-size: 15px;
                 border-radius: 8px;
               }
               .order-edit-modal h2 {
                 font-size: 1.2em;
+              }
+            }
+            @media (max-width: 480px) {
+              .order-edit-modal-overlay {
+                padding: 12px;
+              }
+              .order-edit-modal {
+                width: calc(100% - 24px);
+                padding: 16px 12px;
               }
             }
           `}</style>

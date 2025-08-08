@@ -2,20 +2,14 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import './App.css';
 import PrivacyPolicyPage from './Pages/Info/PrivacyPolicyPage';
 import DeleteAccountPage from './Pages/Info/DeleteAccountPage';
-import InfoPage from './Pages/Info/InfoPage';
 import ReceiptPage from './Pages/Receipt/ReceiptPage';
 import ReceiptExamplePage from './Pages/Info/ReceiptExamplePage';
 import ReceiptSplitterPrivacyPolicyPage from './Pages/Info/ReceiptSplitterPrivacyPolicyPage';
 
 function Header() {
-  const navigate = useNavigate();
   return (
     <header className="app-header-bar">
-      <span
-        className="app-header-title"
-        style={{ cursor: 'pointer' }}
-        onClick={() => navigate('/')}
-      >
+      <span className="app-header-title">
         Receipt Splitter App
       </span>
     </header>
@@ -29,8 +23,7 @@ function App() {
         <Header />
         <div className="responsive-container">
           <Routes>
-            <Route path="/" element={<InfoPage />} />
-            <Route path="/receipt" element={<ReceiptPage />} />
+            <Route path="/" element={<ReceiptPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/delete-account" element={<DeleteAccountPage />} />
             <Route path="/receipt-example" element={<ReceiptExamplePage />} />
