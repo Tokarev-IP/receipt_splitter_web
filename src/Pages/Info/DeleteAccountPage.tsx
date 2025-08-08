@@ -80,8 +80,7 @@ const DeleteAccountPage: React.FC = () => {
 
       <h3 style={subheadingStyle}>2. On the Website</h3>
       <ul style={listStyle}>
-        <li>💻 <a href="/signIn" style={{ color: '#3182ce', textDecoration: 'underline' }}>Sign in</a> to your account</li>
-        <li>⚙️ Go to the <strong>Settings</strong> section</li>
+        <li>💻 Go to the <strong>Settings</strong> section in the app</li>
         <li>🗑️ Click on <strong>Delete Account</strong></li>
         <li>✅ Confirm the deletion</li>
       </ul>

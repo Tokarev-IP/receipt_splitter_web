@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
-import SignInPage from './Pages/SignInPage';
 import PrivacyPolicyPage from './Pages/Info/PrivacyPolicyPage';
 import DeleteAccountPage from './Pages/Info/DeleteAccountPage';
 import InfoPage from './Pages/Info/InfoPage';
@@ -32,7 +31,6 @@ function App() {
           <Routes>
             <Route path="/" element={<InfoPage />} />
             <Route path="/receipt" element={<ReceiptPage />} />
-            <Route path="/signin" element={<SignInPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/delete-account" element={<DeleteAccountPage />} />
             <Route path="/receipt-example" element={<ReceiptExamplePage />} />

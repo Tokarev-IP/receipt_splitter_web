@@ -20,7 +20,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({ isOpen, onClose }) => {
       await signOut();
       console.log('User signed out successfully');
       onClose(); // Close the popup after sign out
-      navigate('/signin'); // Redirect to signin page
+      navigate('/'); // Redirect to home page
     } catch (error) {
       console.error('Error signing out:', error);
       alert('Failed to sign out. Please try again.');
@@ -36,7 +36,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({ isOpen, onClose }) => {
       await signOut();
       console.log('Account deleted and signed out successfully');
       onClose(); // Close the popup after account deletion and sign out
-      navigate('/signin', { state: { popupMessage: 'Your account has been deleted successfully.' } }); // Redirect to signin page with success message
+      navigate('/', { state: { popupMessage: 'Your account has been deleted successfully.' } }); // Redirect to home page with success message
     } catch (error) {
       console.error('Error deleting account:', error);
       // On error, sign out and redirect with popup message
@@ -45,7 +45,7 @@ const SettingsPopup: React.FC<SettingsPopupProps> = ({ isOpen, onClose }) => {
       } catch (signOutError) {
         console.error('Error signing out after delete failure:', signOutError);
       }
-      navigate('/signin', { state: { popupMessage: 'You have to sign in again to delete your account' } });
+      navigate('/', { state: { popupMessage: 'You have to sign in again to delete your account' } });
     } finally {
       setIsDeleting(false);
     }

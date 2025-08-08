@@ -246,6 +246,7 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
               background: rgba(0,0,0,0.25);
               display: flex; align-items: center; justify-content: center;
               z-index: 1000;
+              padding: 16px;
             }
             .edit-modal {
               background: #fff;
@@ -261,15 +262,28 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
               flex-direction: column;
             }
             @media (max-width: 600px) {
+              .edit-modal-overlay {
+                padding: 8px;
+              }
               .edit-modal {
-                width: 98vw;
+                width: 100%;
                 min-width: unset;
-                padding: 16px 6px;
+                padding: 20px 16px;
                 font-size: 15px;
                 border-radius: 8px;
+                max-height: 95vh;
               }
               .edit-modal h2 {
                 font-size: 1.2em;
+                margin-bottom: 16px;
+              }
+              .edit-modal input {
+                font-size: 16px !important;
+              }
+            }
+            @media (max-width: 480px) {
+              .edit-modal {
+                padding: 16px 12px;
               }
             }
           `}</style>
@@ -302,11 +316,40 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
                   />
                 </label>
                 {/* Modern increment/decrement controls for tax, discount, tip */}
-                <div style={{ display: 'flex', gap: 16, marginTop: 8, alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  gap: 16, 
+                  marginTop: 8, 
+                  alignItems: 'center', 
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap'
+                }}>
                   {(['tax', 'discount', 'tip'] as const).map((field) => (
-                    <div key={field} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-                      <span style={{ fontWeight: 500, marginBottom: 4, textTransform: 'capitalize' }}>{field.charAt(0).toUpperCase() + field.slice(1)} (%)</span>
-                      <div style={{ display: 'flex', alignItems: 'center', background: '#f5f5f5', borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.06)', padding: '4px 8px' }}>
+                    <div key={field} style={{ 
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      alignItems: 'center', 
+                      flex: '1 1 auto',
+                      minWidth: '120px',
+                      marginBottom: '8px'
+                    }}>
+                      <span style={{ 
+                        fontWeight: 500, 
+                        marginBottom: 4, 
+                        textTransform: 'capitalize',
+                        fontSize: '14px',
+                        textAlign: 'center'
+                      }}>{field.charAt(0).toUpperCase() + field.slice(1)} (%)</span>
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        background: '#f5f5f5', 
+                        borderRadius: 8, 
+                        boxShadow: '0 1px 4px rgba(0,0,0,0.06)', 
+                        padding: '4px 8px',
+                        minWidth: '100px',
+                        justifyContent: 'center'
+                      }}>
                         <button
                           type="button"
                           onClick={() => handleDecrement(field)}
@@ -315,16 +358,24 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
                             background: '#e0e7ef',
                             color: '#1976d2',
                             borderRadius: '50%',
-                            width: 32,
-                            height: 32,
-                            fontSize: 20,
+                            width: 28,
+                            height: 28,
+                            fontSize: 18,
                             fontWeight: 700,
                             cursor: 'pointer',
-                            marginRight: 8,
+                            marginRight: 6,
                             transition: 'background 0.2s',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
                           }}
                         >-</button>
-                        <span style={{ minWidth: 32, textAlign: 'center', fontSize: 18, fontWeight: 600 }}>{form[field] ?? 0}</span>
+                        <span style={{ 
+                          minWidth: 28, 
+                          textAlign: 'center', 
+                          fontSize: 16, 
+                          fontWeight: 600 
+                        }}>{form[field] ?? 0}</span>
                         <button
                           type="button"
                           onClick={() => handleIncrement(field)}
@@ -333,13 +384,16 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
                             background: '#e0e7ef',
                             color: '#1976d2',
                             borderRadius: '50%',
-                            width: 32,
-                            height: 32,
-                            fontSize: 20,
+                            width: 28,
+                            height: 28,
+                            fontSize: 18,
                             fontWeight: 700,
                             cursor: 'pointer',
-                            marginLeft: 8,
+                            marginLeft: 6,
                             transition: 'background 0.2s',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
                           }}
                         >+</button>
                       </div>
@@ -348,9 +402,44 @@ const EditReceiptUI: React.FC<EditReceiptUIProps> = ({ receiptWithOrders, onEdit
                 </div>
               </div>
               {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
-              <div style={{ display: 'flex', gap: 16, marginTop: 32, justifyContent: 'flex-end' }}>
-                <button onClick={handleCancel} style={{ padding: '8px 20px', borderRadius: 6, border: '1px solid #bbb', background: '#f5f5f5', cursor: 'pointer' }}>Cancel</button>
-                <button onClick={handleSave} style={{ padding: '8px 20px', borderRadius: 6, border: 'none', background: '#1976d2', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Save</button>
+              <div style={{ 
+                display: 'flex', 
+                gap: 12, 
+                marginTop: 32, 
+                justifyContent: 'flex-end',
+                flexWrap: 'wrap'
+              }}>
+                <button 
+                  onClick={handleCancel} 
+                  style={{ 
+                    padding: '10px 20px', 
+                    borderRadius: 6, 
+                    border: '1px solid #bbb', 
+                    background: '#f5f5f5', 
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    minWidth: '80px'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handleSave} 
+                  style={{ 
+                    padding: '10px 20px', 
+                    borderRadius: 6, 
+                    border: 'none', 
+                    background: '#1976d2', 
+                    color: '#fff', 
+                    fontWeight: 600, 
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    minWidth: '80px'
+                  }}
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>

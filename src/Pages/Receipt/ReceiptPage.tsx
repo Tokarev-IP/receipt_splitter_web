@@ -2,58 +2,51 @@ import React, { useRef, useState, useEffect } from 'react';
 import { generateReceipt, generateReceiptTranslated } from "../../UseCases/CreateReceiptUseCase";
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import { ReceiptWithOrdersData, OrderData, ReceiptData } from "../../Receipt/ReceiptData";
+import { ReceiptWithOrdersData } from "../../Receipt/ReceiptData";
 import CreateReceiptUI from './CreateReceiptUI';
 import EditReceiptUI from './EditReceiptUI';
 import SplitReceiptUI from './SplitReceiptUI';
-import SettingsPopup from './UI/SettingsPopup';
-import SettingsButton from './UI/SettingsButton';
 import { convertOrderDataListToOrderSplitDataList, convertOrderDataListToOrderSplitForOneList } from '../../UseCases/CreateReceiptUseCase';
 import { OrderDataSplitForAll, OrderDataSplitForOne } from '../../Receipt/ReceiptData';
+import { signInAnonymously } from '../../Firebase/FirebaseAuth';
 
 const ReceiptPage: React.FC = () => {
   const [receiptWithOrders, setReceiptWithOrders] = useState<ReceiptWithOrdersData | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [showImageModal, setShowImageModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [authLoading, setAuthLoading] = useState(true);
   const [names, setNames] = useState<string[]>([]);
-  const [showAddNameModal, setShowAddNameModal] = useState(false);
-  const [newName, setNewName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const [step, setStep] = useState<'create' | 'edit' | 'split'>('create');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [showSettingsPopup, setShowSettingsPopup] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [authLoading, setAuthLoading] = useState(false);
   const prevOrdersRef = useRef<any[]>([]);
   const [orderSplitListForAll, setOrderSplitListForAll] = useState<OrderDataSplitForAll[]>([]);
   const [orderSplitListForOne, setOrderSplitListForOne] = useState<OrderDataSplitForOne[]>([]);
 
-  // Helper function for deep compare
-  function ordersAreEqual(a: any[], b: any[]): boolean {
-    if (a.length !== b.length) return false;
-    for (let i = 0; i < a.length; i++) {
-      if (
-        a[i].name !== b[i].name ||
-        a[i].quantity !== b[i].quantity ||
-        a[i].price !== b[i].price ||
-        a[i].translatedName !== b[i].translatedName // <-- compare translatedName too
-      ) {
-        return false;
-      }
+  const handleSignInAnonymously = async () => {
+    setAuthLoading(true);
+    setAuthError(null);
+    try {
+      await signInAnonymously();
+    } catch (error: any) {
+      setAuthError(error?.message || 'Failed to sign in anonymously. Please try again.');
+    } finally {
+      setAuthLoading(false);
     }
-    return true;
-  }
+  };
 
   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.emailVerified) {
-        setAuthLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
         setUser(user);
+        setAuthError(null);
       } else {
-        navigate('/signin');
+        await handleSignInAnonymously();
       }
     });
     return () => unsubscribe();
@@ -72,20 +65,17 @@ const ReceiptPage: React.FC = () => {
       );
     if (changed) {
       prevOrdersRef.current = currentOrders;
-      // Only recompute split data when receipt data actually changes
       setOrderSplitListForAll(convertOrderDataListToOrderSplitDataList(orders));
       setOrderSplitListForOne(convertOrderDataListToOrderSplitForOneList(orders));
     }
-    // If not changed, do not touch split state!
   }, [receiptWithOrders ? receiptWithOrders.orders : undefined]);
 
   const processImage = async (image: File, language?: string): Promise<ReceiptWithOrdersData & { attemptsLeft: number }> => {
-    if (!user) throw new Error('User not authenticated');
     let data;
     if (language && language !== 'English') {
-      data = await generateReceiptTranslated(image, language, user.uid);
+      data = await generateReceiptTranslated(image, language, user?.uid || 'anonymous');
     } else {
-      data = await generateReceipt(image, user.uid);
+      data = await generateReceipt(image, user?.uid || 'anonymous');
     }
     return data;
   };
@@ -136,18 +126,6 @@ const ReceiptPage: React.FC = () => {
     setReceiptWithOrders(newReceiptWithOrders);
   };
 
-  const handleEditCancel = () => {
-    // No-op, modal closes itself
-  };
-
-  const handleEditNav = () => {
-    if (receiptWithOrders) setStep('edit');
-  };
-
-  const handleSplitNav = () => {
-    if (receiptWithOrders) setStep('split');
-  };
-
   const handleAddName = (name: string) => {
     if (name.trim()) {
       setNames(prev => [...prev, name.trim()]);
@@ -158,22 +136,73 @@ const ReceiptPage: React.FC = () => {
     setNames(prev => prev.filter(name => name !== nameToRemove));
   };
 
-  const handleCancelAddName = () => {
-    setNewName('');
-    setShowAddNameModal(false);
-  };
 
-  if (authLoading) {
+
+  // Show authentication error UI if there's an auth error
+  if (authError) {
     return (
-      <div className="flex-center" style={{ minHeight: '100vh', background: '#f7fafc' }}>
-        <div style={{ fontSize: '1.2rem', color: '#2d3748' }}>Checking authentication...</div>
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        background: 'rgba(0,0,0,0.25)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 2000
+      }}>
+        <div style={{
+          background: '#fff',
+          borderRadius: 12,
+          padding: 32,
+          minWidth: 320,
+          maxWidth: '90vw',
+          boxShadow: '0 2px 16px rgba(0,0,0,0.15)',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: 18,
+            marginBottom: 24,
+            color: '#d32f2f',
+            fontWeight: 500
+          }}>
+            Authentication Error
+          </div>
+          <div style={{
+            fontSize: 16,
+            marginBottom: 32,
+            color: '#374151',
+            lineHeight: 1.5
+          }}>
+            {authError}
+          </div>
+          <button
+            onClick={handleSignInAnonymously}
+            disabled={authLoading}
+            style={{
+              padding: '12px 32px',
+              borderRadius: 8,
+              border: 'none',
+              background: authLoading ? '#ccc' : '#1976d2',
+              color: '#fff',
+              fontWeight: 600,
+              fontSize: 16,
+              cursor: authLoading ? 'not-allowed' : 'pointer',
+              transition: 'all 0.3s ease',
+              minWidth: 120
+            }}
+          >
+            {authLoading ? 'Signing in...' : 'Try Again'}
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="responsive-container" style={{ position: 'relative' }}>
-      {/* Top Navigation */}
       <nav style={{ 
         display: 'flex', 
         justifyContent: 'center', 
@@ -193,21 +222,6 @@ const ReceiptPage: React.FC = () => {
         flexWrap: 'wrap',
         gap: '8px'
       }}>
-        {/* Settings Button on the left */}
-        <div style={{ flexShrink: 0 }}>
-          <SettingsButton onClick={() => setShowSettingsPopup(true)} />
-        </div>
-        
-        {/* Divider */}
-        <div style={{ 
-          width: 1, 
-          height: 32, 
-          background: 'linear-gradient(to bottom, transparent, rgba(25, 118, 210, 0.2), transparent)',
-          margin: '0 8px',
-          flexShrink: 0
-        }} />
-        
-        {/* Navigation Buttons */}
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           <div
             style={{ 
@@ -277,7 +291,6 @@ const ReceiptPage: React.FC = () => {
         </div>
       </nav>
 
-      {/* Step UIs */}
       {step === 'create' && !loading && (
         <CreateReceiptUI
           onChooseImage={handleChooseImage}
@@ -347,7 +360,7 @@ const ReceiptPage: React.FC = () => {
         <EditReceiptUI
           receiptWithOrders={receiptWithOrders}
           onEditSave={handleEditSave}
-          onEditCancel={handleEditCancel}
+          onEditCancel={() => {}}
         />
       )}
 
@@ -363,15 +376,6 @@ const ReceiptPage: React.FC = () => {
           setOrderSplitListForOne={setOrderSplitListForOne}
         />
       )}
-
-      {/* Split step placeholder (not implemented, but for future use) */}
-      {/* <SplitReceiptUI /> */}
-
-      {/* Settings Popup */}
-      <SettingsPopup
-        isOpen={showSettingsPopup}
-        onClose={() => setShowSettingsPopup(false)}
-      />
     </div>
   );
 };
