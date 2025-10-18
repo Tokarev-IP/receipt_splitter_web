@@ -1,9 +1,8 @@
-import { ReceiptData, OrderData, ReceiptWithOrdersData } from "../Receipt/ReceiptData";
-import { getAI, getGenerativeModel, GoogleAIBackend, Schema } from "firebase/ai";
+import { ReceiptWithOrdersData } from "../Receipt/ReceiptData";
+import { Schema } from "firebase/ai";
 import {generateGeminiContent} from "../Firebase/GeminiAi"
 import * as FirestoreUseCase from "../Firebase/FirestoreUseCase";
 import { UserAttemptsData } from "../Receipt/FirestoreData";
-
 
 const receiptJsonSchemaNotTranslated = Schema.object({
     properties: {

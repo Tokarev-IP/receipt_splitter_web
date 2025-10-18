@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
+import AppAdsTxtPage from './Pages/Info/AppAdsTxtPage';
 import PrivacyPolicyPage from './Pages/Info/PrivacyPolicyPage';
 import DeleteAccountPage from './Pages/Info/DeleteAccountPage';
 import ReceiptPage from './Pages/Receipt/ReceiptPage';
@@ -24,6 +25,8 @@ function App() {
         <div className="responsive-container">
           <Routes>
             <Route path="/" element={<ReceiptPage />} />
+            <Route path="/app-ads.txt" element={<AppAdsTxtPage />} />
+            <Route path="/split-receipt" element={<ReceiptPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/delete-account" element={<DeleteAccountPage />} />
             <Route path="/receipt-example" element={<ReceiptExamplePage />} />

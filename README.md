@@ -2,7 +2,7 @@
 
 **Receipt Splitter** is a simple web tool that turns a photo of a receipt into a digital version, lets you split the total with friends, and share it easily. The same app is also available on **Android** so you can split on the go!
 
-**🌐 Try it now:** [https://receipt-splitter-it-app.web.app/](https://receipt-splitter-it-app.web.app/)
+**🌐 Try it now:** [Receipt Splitter](https://receipt-splitter-it-app.firebaseapp.com/)
 
 ---
 
@@ -40,10 +40,17 @@ The app uses **Firebase Authentication** for secure sign-in:
 
 ---
 
-## 📱 Android Version
+## 📸 Screenshots
 
-Prefer mobile? Download **Receipt Splitter** for Android:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1c1e14d7-2b25-4b39-a7dc-4c51471eb2ef" width="30%" />
+  <img src="https://github.com/user-attachments/assets/06db93f0-b12e-4a67-8027-d0aa4ce57f1b" width="30%" />
+</p>
 
-[![Get it on Google Play](https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg)](https://play.google.com/store/apps/details?id=com.iliatokarev.receipt_splitter_app)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/740dd804-fca0-4d20-8fbe-7efdc2d16dad" width="30%" />
+  <img src="https://github.com/user-attachments/assets/092bdfac-2495-4247-a459-f1c20a10fb32" width="30%" />
+  <img src="https://github.com/user-attachments/assets/2214185f-a7f7-4a04-bfa1-fce8a99b58b8" width="30%" />
+</p>
 
 ---
